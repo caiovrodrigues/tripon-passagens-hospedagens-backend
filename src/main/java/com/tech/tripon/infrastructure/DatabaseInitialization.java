@@ -3,6 +3,7 @@ package com.tech.tripon.infrastructure;
 import com.tech.tripon.domain.entity.*;
 import com.tech.tripon.domain.repository.*;
 import jakarta.annotation.PostConstruct;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -20,9 +21,10 @@ public class DatabaseInitialization {
     private final ComodidadeRepository comodidadeRepository;
     private final HotelRepository hotelRepository;
     private final CompraPassagemRepository compraPassagemRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
-    public DatabaseInitialization(UsuarioRepository usuarioRepository, RoleRepository roleRepository, UsuarioRolesRepository usuarioRolesRepository, LocalidadeRepository localidadeRepository, PassagemRepository passagemRepository, CompanhiaAereaRepository companhiaAereaRepository, ComodidadeRepository comodidadeRepository, HotelRepository hotelRepository, CompraPassagemRepository compraPassagemRepository) {
+    public DatabaseInitialization(UsuarioRepository usuarioRepository, RoleRepository roleRepository, UsuarioRolesRepository usuarioRolesRepository, LocalidadeRepository localidadeRepository, PassagemRepository passagemRepository, CompanhiaAereaRepository companhiaAereaRepository, ComodidadeRepository comodidadeRepository, HotelRepository hotelRepository, CompraPassagemRepository compraPassagemRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.roleRepository = roleRepository;
         this.usuarioRolesRepository = usuarioRolesRepository;
@@ -32,21 +34,25 @@ public class DatabaseInitialization {
         this.comodidadeRepository = comodidadeRepository;
         this.hotelRepository = hotelRepository;
         this.compraPassagemRepository = compraPassagemRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
     public void init(){
-        var usuario1 = Usuario.builder().username("caio").email("caio@gmail.com").build();
-        usuarioRepository.save(usuario1);
+        var usuario1 = Usuario.builder().username("caio").email("caio@gmail.com").password(passwordEncoder.encode("123456")).build();
+        var usuario2 = Usuario.builder().username("ana").email("ana@gmail.com").password(passwordEncoder.encode("123456")).build();
+        usuarioRepository.saveAll(List.of(usuario1, usuario2));
 
         var roleAdmin = Role.builder().nome("ADMIN").build();
-        var roleBasic = Role.builder().nome("BASIC").build();
-        roleRepository.saveAll(List.of(roleAdmin, roleBasic));
+        var roleUser = Role.builder().nome("USER").build();
+        roleRepository.saveAll(List.of(roleAdmin, roleUser));
 
-        var roleUsuario1 = UsuarioRoles.builder().usuario(usuario1).role(roleAdmin).build();
-        var roleUsuario2 = UsuarioRoles.builder().usuario(usuario1).role(roleBasic).build();
+        var usuario1Role1 = UsuarioRoles.builder().usuario(usuario1).role(roleAdmin).build();
+        var usuario1Role2 = UsuarioRoles.builder().usuario(usuario1).role(roleUser).build();
 
-        usuarioRolesRepository.saveAll(List.of(roleUsuario1, roleUsuario2));
+        var usuario2Role2 = UsuarioRoles.builder().usuario(usuario2).role(roleUser).build();
+
+        usuarioRolesRepository.saveAll(List.of(usuario1Role1, usuario1Role2, usuario2Role2));
 
         var localidade1 = localidadeRepository.save(Localidade.builder().pais("Brasil").estado("São Paulo").cidade("Guarulhos").build());
         var localidade2 = localidadeRepository.save(Localidade.builder().pais("Brasil").estado("Rio de Janeiro").cidade("Arraial do Cabo").build());

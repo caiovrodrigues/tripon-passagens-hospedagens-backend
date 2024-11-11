@@ -30,7 +30,7 @@ public class Usuario extends AuditedEntity {
     private String password;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UsuarioRoles> usuarioRoles;
 
     @JsonIgnore

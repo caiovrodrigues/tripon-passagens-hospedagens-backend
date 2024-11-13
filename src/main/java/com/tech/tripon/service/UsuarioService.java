@@ -5,6 +5,7 @@ import com.tech.tripon.domain.repository.UsuarioRepository;
 import com.tech.tripon.infrastructure.security.JwtService;
 import com.tech.tripon.service.dto.JwtTokenResponse;
 import com.tech.tripon.service.dto.LoginRequest;
+import com.tech.tripon.service.dto.UsuarioCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,4 +39,8 @@ public class UsuarioService {
         return usuarioRepository.findById(id).orElseThrow();
     }
 
+    public void criar(UsuarioCreate usuariocriar) {
+        Usuario usuario = Usuario.builder().email(usuariocriar.email()).password(usuariocriar.passoword()).cpf(usuariocriar.cpf()).build();
+        usuarioRepository.save(usuario);
+    }
 }

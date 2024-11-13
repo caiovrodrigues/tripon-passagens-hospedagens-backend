@@ -7,6 +7,7 @@ import com.tech.tripon.infrastructure.security.annotation.RoleUsuario;
 import com.tech.tripon.service.UsuarioService;
 import com.tech.tripon.service.dto.JwtTokenResponse;
 import com.tech.tripon.service.dto.LoginRequest;
+import com.tech.tripon.service.dto.UsuarioCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,4 +40,11 @@ public class UsuarioController {
         return usuarioService.findById(id);
     }
 
+    @PostMapping("/criar")
+    public void usuariocreate (@RequestBody UsuarioCreate usuariocriar){
+        usuarioService.criar(usuariocriar);
+
+    }
 }
+
+

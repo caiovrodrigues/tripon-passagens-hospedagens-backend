@@ -3,9 +3,10 @@ package com.tech.tripon.service;
 import com.tech.tripon.domain.entity.Usuario;
 import com.tech.tripon.domain.repository.UsuarioRepository;
 import com.tech.tripon.infrastructure.security.JwtService;
-import com.tech.tripon.service.dto.JwtTokenResponse;
-import com.tech.tripon.service.dto.LoginRequest;
+import com.tech.tripon.web.dto.JwtTokenResponse;
+import com.tech.tripon.web.dto.LoginRequest;
 import com.tech.tripon.service.dto.UsuarioCreate;
+import com.tech.tripon.web.dto.UsuarioResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class UsuarioService {
         }
 
         String token = jwtService.generateToken(usuario);
-        return new JwtTokenResponse(token);
+        return new JwtTokenResponse(token, new UsuarioResponseDTO(usuario));
     }
 
     public Usuario findById(Integer id){

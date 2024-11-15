@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -21,6 +22,7 @@ public class JwtService {
                 .withIssuedAt(Instant.now())
                 .withExpiresAt(Instant.now().plusSeconds(60 * 60 * 2))
                 .withSubject(usuario.getEmail())
+                .withClaim("roles", usuario.getUsuarioRoles().stream().map(role -> role.getRole().getNome()).collect(Collectors.joining(" ")))
                 .sign(algorithm);
     }
 

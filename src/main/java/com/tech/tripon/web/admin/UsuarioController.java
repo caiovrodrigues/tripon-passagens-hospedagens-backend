@@ -5,9 +5,10 @@ import com.tech.tripon.infrastructure.security.UserDetailsImpl;
 import com.tech.tripon.infrastructure.security.annotation.RoleAdministrador;
 import com.tech.tripon.infrastructure.security.annotation.RoleUsuario;
 import com.tech.tripon.service.UsuarioService;
-import com.tech.tripon.service.dto.JwtTokenResponse;
-import com.tech.tripon.service.dto.LoginRequest;
+import com.tech.tripon.web.dto.JwtTokenResponse;
+import com.tech.tripon.web.dto.LoginRequest;
 import com.tech.tripon.service.dto.UsuarioCreate;
+import com.tech.tripon.web.dto.UsuarioResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,22 +23,23 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
+    @RoleUsuario
+    @GetMapping("/token")
+    public ResponseEntity<UsuarioResponseDTO> findByToken(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        UsuarioResponseDTO usuarioFromToken = new UsuarioResponseDTO(userDetails.getUsuario());
+        return ResponseEntity.ok(usuarioFromToken);
+    }
+
     @RoleAdministrador
-    @GetMapping
+    @GetMapping("/todos")
     public ResponseEntity<List<Usuario>> getAll(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        System.out.println(userDetails);
+        System.out.println(userDetails.getUsuario().getEmail());
         return ResponseEntity.ok(usuarioService.getAll());
     }
 
     @PostMapping("/auth")
     public ResponseEntity<JwtTokenResponse> login(@RequestBody LoginRequest credenciais){
         return ResponseEntity.ok(usuarioService.logar(credenciais));
-    }
-
-    @RoleUsuario
-    @GetMapping("/admin/{id}")
-    public Usuario isAdmin(@PathVariable Integer id){
-        return usuarioService.findById(id);
     }
 
     @PostMapping("/criar")

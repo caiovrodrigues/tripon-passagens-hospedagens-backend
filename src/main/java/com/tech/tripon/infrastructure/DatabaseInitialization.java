@@ -41,7 +41,10 @@ public class DatabaseInitialization {
     public void init(){
         var usuario1 = Usuario.builder().username("caio").email("caio@gmail.com").password(passwordEncoder.encode("123456")).build();
         var usuario2 = Usuario.builder().username("ana").email("ana@gmail.com").password(passwordEncoder.encode("123456")).build();
-        usuarioRepository.saveAll(List.of(usuario1, usuario2));
+        var usuario3 = Usuario.builder().username("lucas").email("lucas@gmail.com").password(passwordEncoder.encode("123456")).build();
+        var usuario4 = Usuario.builder().username("pedro").email("pedro@gmail.com").password(passwordEncoder.encode("123456")).build();
+        usuarioRepository.saveAll(List.of(usuario1, usuario2, usuario3, usuario4));
+        usuarioRepository.save(usuario3);
 
         var roleAdmin = Role.builder().nome("ADMIN").build();
         var roleUser = Role.builder().nome("USER").build();
@@ -51,8 +54,10 @@ public class DatabaseInitialization {
         var usuario1Role2 = UsuarioRoles.builder().usuario(usuario1).role(roleUser).build();
 
         var usuario2Role2 = UsuarioRoles.builder().usuario(usuario2).role(roleUser).build();
+        var usuario3Role2 = UsuarioRoles.builder().usuario(usuario3).role(roleUser).build();
+        var usuario4Role2 = UsuarioRoles.builder().usuario(usuario4).role(roleUser).build();
 
-        usuarioRolesRepository.saveAll(List.of(usuario1Role1, usuario1Role2, usuario2Role2));
+        usuarioRolesRepository.saveAll(List.of(usuario1Role1, usuario1Role2, usuario2Role2, usuario3Role2, usuario4Role2));
 
         var localidade1 = localidadeRepository.save(Localidade.builder().pais("Brasil").estado("São Paulo").cidade("Guarulhos").build());
         var localidade2 = localidadeRepository.save(Localidade.builder().pais("Brasil").estado("Rio de Janeiro").cidade("Arraial do Cabo").build());

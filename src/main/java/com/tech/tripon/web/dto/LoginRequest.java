@@ -1,4 +1,4 @@
-package com.tech.tripon.service.dto;
+package com.tech.tripon.web.dto;
 
 public record LoginRequest(
         String email,

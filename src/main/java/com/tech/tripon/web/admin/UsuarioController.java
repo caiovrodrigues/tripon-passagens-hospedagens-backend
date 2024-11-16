@@ -47,6 +47,12 @@ public class UsuarioController {
         usuarioService.criar(usuariocriar);
 
     }
+
+    @RoleAdministrador
+    @GetMapping("/is-admin")
+    public ResponseEntity<Void> isAdmin(){
+        return ResponseEntity.noContent().build();
+    }
 }
 
 

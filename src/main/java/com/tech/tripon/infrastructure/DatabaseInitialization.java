@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Component
 public class DatabaseInitialization {
@@ -91,13 +92,16 @@ public class DatabaseInitialization {
         var comodidade6 = Comodidade.builder().nome("Wi-fi").build();
         comodidadeRepository.saveAll(List.of(comodidade1, comodidade2, comodidade3, comodidade4, comodidade5, comodidade6));
 
-        var hotel = Hotel.builder().nome("Hotel Casablanca").descricao("descrição do hotel").quartos(2).banheiros(1).estrelas(4).localizacao(localidade).build();
-        var hotelComodidade1 = HotelComodidades.builder().hotel(hotel).comodidade(comodidade1).build();
-        var hotelComodidade2 = HotelComodidades.builder().hotel(hotel).comodidade(comodidade2).build();
-        var hotelComodidade3 = HotelComodidades.builder().hotel(hotel).comodidade(comodidade3).build();
-        var hotelComodidade4 = HotelComodidades.builder().hotel(hotel).comodidade(comodidade4).build();
-        hotel.setComodidades(List.of(hotelComodidade1, hotelComodidade2, hotelComodidade3, hotelComodidade4));
-        hotelRepository.save(hotel);
+        IntStream.rangeClosed(1,10).forEach(num -> {
+            var hotel = Hotel.builder().nome("Hotel " + num).descricao("descrição do hotel" + num).quartos(num).banheiros(1).estrelas(4).build();
+            var hotelComodidade1 = HotelComodidades.builder().hotel(hotel).comodidade(comodidade1).build();
+            var hotelComodidade2 = HotelComodidades.builder().hotel(hotel).comodidade(comodidade2).build();
+            var hotelComodidade3 = HotelComodidades.builder().hotel(hotel).comodidade(comodidade3).build();
+            var hotelComodidade4 = HotelComodidades.builder().hotel(hotel).comodidade(comodidade4).build();
+            hotel.setComodidades(List.of(hotelComodidade1, hotelComodidade2, hotelComodidade3, hotelComodidade4));
+            hotelRepository.save(hotel);
+        });
+
     }
 
 }

@@ -7,7 +7,7 @@ import com.tech.tripon.infrastructure.security.annotation.RoleUsuario;
 import com.tech.tripon.service.UsuarioService;
 import com.tech.tripon.web.dto.JwtTokenResponse;
 import com.tech.tripon.web.dto.LoginRequest;
-import com.tech.tripon.service.dto.UsuarioCreate;
+import com.tech.tripon.web.dto.UsuarioCreate;
 import com.tech.tripon.web.dto.UsuarioResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

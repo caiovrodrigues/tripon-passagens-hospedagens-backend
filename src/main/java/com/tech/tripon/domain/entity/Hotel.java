@@ -36,4 +36,7 @@ public class Hotel extends AuditedEntity{
     @OneToOne
     private Localidade localizacao;
 
+    @Column(name = "img_url")
+    private String imgUrl;
+
 }

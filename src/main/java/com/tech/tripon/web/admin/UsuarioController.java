@@ -53,6 +53,12 @@ public class UsuarioController {
     public ResponseEntity<Void> isAdmin(){
         return ResponseEntity.noContent().build();
     }
+
+    @RoleUsuario
+    @GetMapping("/is-logado")
+    public ResponseEntity<Void> isLogado(){
+        return ResponseEntity.noContent().build();
+    }
 }
 
 

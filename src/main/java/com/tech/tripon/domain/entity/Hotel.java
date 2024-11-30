@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Builder
@@ -29,6 +30,12 @@ public class Hotel extends AuditedEntity{
     @Column(name = "banheiros")
     private Integer banheiros;
 
+    @Column(name = "img_url")
+    private String imgUrl;
+
+    @Column(name = "price")
+    private BigDecimal price;
+
     @JsonIgnore
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     public List<HotelComodidades> comodidades;
@@ -36,7 +43,6 @@ public class Hotel extends AuditedEntity{
     @OneToOne
     private Localidade localizacao;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+
 
 }

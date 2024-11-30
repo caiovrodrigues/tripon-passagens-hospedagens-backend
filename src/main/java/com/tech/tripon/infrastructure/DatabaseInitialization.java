@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -40,10 +41,10 @@ public class DatabaseInitialization {
 
     @PostConstruct
     public void init(){
-        var usuario1 = Usuario.builder().username("caio").email("caio@gmail.com").password(passwordEncoder.encode("123456")).build();
-        var usuario2 = Usuario.builder().username("ana").email("ana@gmail.com").password(passwordEncoder.encode("123456")).build();
-        var usuario3 = Usuario.builder().username("lucas").email("lucas@gmail.com").password(passwordEncoder.encode("123456")).build();
-        var usuario4 = Usuario.builder().username("pedro").email("pedro@gmail.com").password(passwordEncoder.encode("123456")).build();
+        var usuario1 = Usuario.builder().nome("Caio").sobrenome("Vinícius").username("caio").email("caio@gmail.com").cpf("02058228278").password(passwordEncoder.encode("123456")).build();
+        var usuario2 = Usuario.builder().nome("Ana").sobrenome("Silva").username("ana").email("ana@gmail.com").cpf("64948142719").password(passwordEncoder.encode("123456")).build();
+        var usuario3 = Usuario.builder().nome("Lucas").sobrenome("Sabino").username("lucas").email("lucas@gmail.com").cpf("27570825900").password(passwordEncoder.encode("123456")).build();
+        var usuario4 = Usuario.builder().nome("Pedro").sobrenome("Henrique").username("pedro").email("pedro@gmail.com").cpf("59991918744").password(passwordEncoder.encode("123456")).build();
         usuarioRepository.saveAll(List.of(usuario1, usuario2, usuario3, usuario4));
         usuarioRepository.save(usuario3);
 
@@ -61,7 +62,11 @@ public class DatabaseInitialization {
         usuarioRolesRepository.saveAll(List.of(usuario1Role1, usuario1Role2, usuario2Role2, usuario3Role2, usuario4Role2));
 
         var localidade1 = localidadeRepository.save(Localidade.builder().pais("Brasil").estado("São Paulo").cidade("Guarulhos").build());
+        var localidade4 = localidadeRepository.save(Localidade.builder().pais("Brasil").estado("São Paulo").cidade("Congonhas").build());
+        var localidade5 = localidadeRepository.save(Localidade.builder().pais("Brasil").estado("São Paulo").cidade("Ribeirão Preto").build());
+
         var localidade2 = localidadeRepository.save(Localidade.builder().pais("Brasil").estado("Rio de Janeiro").cidade("Arraial do Cabo").build());
+        var localidade6 = localidadeRepository.save(Localidade.builder().pais("Brasil").estado("Rio de Janeiro").cidade("Búzios").build());
 
         var endereco = Endereco.builder().localizacao(localidade1).bairro("Polivalente").cep("12345-678").logradouro("Rua tal").numero("10").build();
 
@@ -76,7 +81,12 @@ public class DatabaseInitialization {
         var companhiaAerea = CompanhiaArea.builder().nome("Companhia A").avaliacao(4.3F).logotipoUrl("img.com").usuario(usuario).build();
         companhiaAereaRepository.save(companhiaAerea);
 
-        var passagem = Passagem.builder().companhiaAerea(companhiaAerea).origem(origem).destino(destino).dataIda(LocalDateTime.now().plusDays(5)).preco(239.99).dataVolta(LocalDateTime.now().plusDays(10)).build();
+        IntStream.rangeClosed(1, 10).forEach(num -> {
+            var passagem = Passagem.builder().companhiaAerea(companhiaAerea).origem(origem).destino(destino).dataIda(LocalDateTime.now().plusDays(5)).preco(239.99 + num).dataVolta(LocalDateTime.now().plusDays(10)).build();
+            passagemRepository.save(passagem);
+        });
+
+        var passagem = Passagem.builder().companhiaAerea(companhiaAerea).origem(origem).destino(destino).dataIda(LocalDateTime.now().plusDays(5)).preco(499.99).dataVolta(LocalDateTime.now().plusDays(10)).build();
         passagemRepository.save(passagem);
 
         var compraPassagem = CompraPassagem.builder().cliente(usuario).passagem(passagem).quantidade(1).build();
@@ -93,7 +103,7 @@ public class DatabaseInitialization {
         comodidadeRepository.saveAll(List.of(comodidade1, comodidade2, comodidade3, comodidade4, comodidade5, comodidade6));
 
         IntStream.rangeClosed(1,10).forEach(num -> {
-            var hotel = Hotel.builder().nome("Hotel " + num).descricao("descrição do hotel" + num).quartos(num).banheiros(1).estrelas(4).build();
+            var hotel = Hotel.builder().nome("Hotel " + num).descricao("descrição do hotel" + num).price(BigDecimal.valueOf(199.99 + (num * 100L))).quartos(num).banheiros(1).estrelas(4).build();
             var hotelComodidade1 = HotelComodidades.builder().hotel(hotel).comodidade(comodidade1).build();
             var hotelComodidade2 = HotelComodidades.builder().hotel(hotel).comodidade(comodidade2).build();
             var hotelComodidade3 = HotelComodidades.builder().hotel(hotel).comodidade(comodidade3).build();

@@ -6,10 +6,7 @@ import com.tech.tripon.domain.entity.UsuarioRoles;
 import com.tech.tripon.domain.repository.RoleRepository;
 import com.tech.tripon.domain.repository.UsuarioRepository;
 import com.tech.tripon.infrastructure.security.JwtService;
-import com.tech.tripon.web.dto.JwtTokenResponse;
-import com.tech.tripon.web.dto.LoginRequest;
-import com.tech.tripon.web.dto.UsuarioCreate;
-import com.tech.tripon.web.dto.UsuarioResponseDTO;
+import com.tech.tripon.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -60,5 +57,9 @@ public class UsuarioService {
                 .build();
         usuario.setUsuarioRoles(Set.of(new UsuarioRoles(usuario, roleUsuario)));
         usuarioRepository.save(usuario);
+    }
+
+    public UsuarioInfoResponseDTO getUsuarioInfoByToken(Usuario usuario) {
+        return new UsuarioInfoResponseDTO(usuario);
     }
 }

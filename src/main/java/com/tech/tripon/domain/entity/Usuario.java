@@ -17,6 +17,12 @@ import java.util.Set;
 @Entity
 public class Usuario extends AuditedEntity {
 
+    @Column(name = "nome")
+    private String nome;
+
+    @Column(name = "sobrenome")
+    private String sobrenome;
+
     @Column(name = "username", unique = true)
     private String username;
 
